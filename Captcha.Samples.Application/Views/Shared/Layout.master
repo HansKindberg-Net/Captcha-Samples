@@ -1,0 +1,118 @@
+﻿<%@ Master Language="C#" AutoEventWireup="false" CodeBehind="Layout.master.cs" Inherits="Captcha.Samples.Application.Views.Shared.Layout" %>
+<%@ Import Namespace="System.Collections.Generic" %>
+<%@ Import Namespace="System.Globalization" %><!DOCTYPE html>
+<asp:PlaceHolder id="htmlPlaceHolder" runat="server"><html lang="<%# this.Model.UiCulture.Name %>"></asp:PlaceHolder>
+	<head>
+        <meta charset="utf-8">
+        <title><asp:ContentPlaceHolder id="titleContent" runat="server" /></title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Captcha samples">
+        <meta name="author" content="Hans Kindberg - open source">
+        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+		<style type="text/css">
+			@media (min-width: 979px) {
+				body {
+					padding-top: 60px;
+					padding-bottom: 40px;
+				}
+			}
+			.field-validation-error,
+			.input-validation-error,
+			.validation-summary-errors {
+				background-color:#f2dede;
+				border:1px solid #eed3d7;
+				color:#b94a48;
+				padding:3px 35px 3px 14px; /* top, right, bottom and left */
+				text-shadow:0 1px 0 rgba(255, 255, 255, 0.5);
+				-moz-border-radius:4px;border-radius:4px;
+				-webkit-border-radius:4px;
+			}
+			.validation-summary-errors {
+				padding-right:14px;
+			}
+			.input-validation-error,
+			#body .input-validation-error {
+				background-color:#f2dede;
+			}
+			.field-validation-valid,
+			.validation-summary-valid {
+				display: none;
+			}
+		</style>
+        <script src="//code.jquery.com/jquery-1.8.3.js" type="text/javascript"></script><!-- Later releases does not work with jquery.validate, validation does not avoid server request. -->
+        <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.js"></script>
+        <script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.js" type="text/javascript"></script>
+        <script src="//ajax.aspnetcdn.com/ajax/mvc/3.0/jquery.validate.unobtrusive.js" type="text/javascript"></script>
+    </head>
+    <body id="body">
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="brand" href="/">Captcha samples</a>
+                    <div class="nav-collapse collapse">
+                        <asp:PlaceHolder id="navigationPlaceHolder" runat="server">
+							<ul class="nav">
+								<li<%# this.Model.CurrentFilePath.Equals("/Index.aspx", StringComparison.OrdinalIgnoreCase) ? " class=\"active\"" : string.Empty %>><a href="/">Home</a></li>
+								<li<%# this.Model.CurrentFilePath.Equals("/Views/RecaptchaSample/Index.aspx", StringComparison.OrdinalIgnoreCase) ? " class=\"active\"" : string.Empty %>><a href="/Views/RecaptchaSample/Index.aspx">Recaptcha</a></li>
+							</ul>
+						</asp:PlaceHolder>
+						<form class="navbar-form pull-right">
+							<asp:Repeater id="cultureRepeater" DataSource="<%# this.Model.Cultures %>" runat="server">
+								<HeaderTemplate><select name="<%# this.Model.CultureParameterName %>"></HeaderTemplate>
+								<ItemTemplate>
+									<option value="<%# ((KeyValuePair<CultureInfo, bool>) Container.DataItem).Key.Name %>"<%# ((KeyValuePair<CultureInfo, bool>) Container.DataItem).Value ? " selected=\"selected\"" : string.Empty %>><%# ((KeyValuePair<CultureInfo, bool>) Container.DataItem).Key.NativeName %></option>
+								</ItemTemplate>
+								<FooterTemplate></select></FooterTemplate>
+							</asp:Repeater>
+							<button type="submit" class="btn">Select</button>
+						</form>
+                    </div><!--/.nav-collapse -->
+                </div>
+            </div>
+        </div>
+        <div class="container">
+	        <div class="row-fluid">
+				<div class="span9">
+					<div class="hero-unit">
+						<asp:ContentPlaceHolder id="mainContent" runat="server" />
+					</div>
+				</div>
+				<div class="span3">
+					<div class="alert alert-info">
+						<asp:PlaceHolder id="informationPlaceHolder" runat="server">
+							<p><strong>Preferred culture:</strong> <%# this.Model.PreferredCulture.Name %></p>
+							<p><strong>Culture:</strong> <%# this.Model.Culture.Name %></p>
+							<p><strong>UI-culture:</strong> <%# this.Model.UiCulture.Name %></p>
+						</asp:PlaceHolder>
+					</div>
+				</div>
+	        </div>
+            <div class="row-fluid">
+                <div class="span4">
+                    <h2>Heading</h2>
+                    <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+                    <p><a class="btn" href="#">View details &raquo;</a></p>
+                </div>
+                <div class="span4">
+                    <h2>Heading</h2>
+                    <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+                    <p><a class="btn" href="#">View details &raquo;</a></p>
+                </div>
+                <div class="span4">
+                    <h2>Heading</h2>
+                    <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+                    <p><a class="btn" href="#">View details &raquo;</a></p>
+                </div>
+            </div>
+            <hr/>
+            <footer>
+                <p>Hans Kindberg - open source</p>
+            </footer>
+        </div> <!-- /container -->
+    </body>
+</html>
